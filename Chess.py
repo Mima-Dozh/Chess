@@ -1,15 +1,13 @@
-# подключаем графическую библиотеку
 from tkinter import *
-# подключаем модули, которые отвечают за время и случайные числа
-import time
-import random
 
 from Controller import Controller
-# создаём новый объект — окно с игровым полем. В нашем случае переменная окна называется tk, и мы его сделали из класса Tk() — он есть в графической библиотеке 
+from PIL import Image, ImageTk
 tk = Tk()
-# делаем заголовок окна — Games с помощью свойства объекта title
-tk.title('Game')
+tk.title('Chess')
+tk.attributes('-fullscreen', True)
 
+def exit_button():
+    tk.destroy()
 
 def Chessboard():
     board = []
@@ -21,7 +19,17 @@ def Chessboard():
             line.append(Controller(j, i, board, fr))
             line[i].draw()
         board.append(line)
+    lbl = Label(tk, text="Ход белых")
+    lbl.pack()
+    board.append(lbl)
+    img = PhotoImage(file = 'D:\\py\\py.Task\\Chess\\Chess\\Chessman\\BlackKing.gif')
+    l = Label(tk, image = img)
+    l.image_ref=img
+    l.pack()
+
+
 
 if __name__ == "__main__":
+    exit_b = Button(text = 'X', command = exit_button).place(relx = 0.99)
     Chessboard()
     tk.mainloop()
