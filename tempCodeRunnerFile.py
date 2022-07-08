@@ -1,1 +1,1 @@
-l.image_ref=img
+board[self.chess.x][self.chess.y].button['image

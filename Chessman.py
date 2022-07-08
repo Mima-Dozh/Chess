@@ -37,10 +37,10 @@ class Chessman():
             self.color = "White"
     
     def defolt(self):
-        self.type = " "
+        self.type = ""
         self.color = ""
     
-    def get_dd(self):
+    def get_type(self):
         if self.type == '♟':
             return '♟'
         if self.type == '♙':
@@ -49,7 +49,7 @@ class Chessman():
             if self.color == "Black":
                 return '♜'
             return '♖'
-        if self.type == 'Khite':
+        if self.type == 'Knite':
             if self.color == "Black":
                 return '♞'
             return '♘'
@@ -66,32 +66,33 @@ class Chessman():
                 return '♚'
             return '♔'
     
-    def get_type(self):
+    def get_img(self):
+        img_path = 'D:\\py\\py.Task\\Chess\\Chess\\Chessman\\'
         if self.type == '♟':
-            return 'BlackPeshka.gif'
+            return img_path + 'BlackPeshka.gif'
         if self.type == '♙':
-            return 'WhitePeshka.gif'
+            return img_path + 'WhitePeshka.gif'
         if self.type == 'Rock':
             if self.color == "Black":
-                return 'BlackBishop.gif'
-            return 'WhitePeshka.gif'
-        if self.type == 'Khite':
+                return img_path + 'BlackRock.gif'
+            return img_path + 'WhiteRock.gif'
+        if self.type == 'Knite':
             if self.color == "Black":
-                return 'BlackKnite.gif'
-            return 'WhiteKnite.gif'
+                return img_path + 'BlackKnite.gif'
+            return img_path + 'WhiteKnite.gif'
         if self.type == 'Bishop':
             if self.color == "Black":
-                return 'BlackBishop.gif'
-            return 'WhiteBishop.gif'
+                return img_path + 'BlackBishop.gif'
+            return img_path + 'WhiteBishop.gif'
         if self.type == 'Queen':
             if self.color == "Black":
-                return 'BlackQueen.gif'
-            return 'WhiteQueen.gif'
+                return img_path + 'BlackQueen.gif'
+            return img_path + 'WhiteQueen.gif'
         if self.type == 'King':
             if self.color == "Black":
-                return 'BlackKing.gif'
-            return 'WhiteKing.gif'
-        return 'empty.gif'
+                return img_path + 'BlackKing.gif'
+            return img_path + 'WhiteKing.gif'
+        return img_path + 'empty.gif'
         
     def move(self):
         if self.type == '♟':
@@ -101,11 +102,11 @@ class Chessman():
                 if(self.x == 1):
                     arr.append((2+ self.x, self.y))
             if(1 + self.y < 8 and \
-                self.board[1 + self.x][1 + self.y].button['text'] != '' and \
+                self.board[1 + self.x][1 + self.y].button['text'] == '' and \
                 self.board[1 + self.x][1 + self.y].chess.color != self.color):   
                 arr.append((1 + self.x, 1 + self.y))
             if(-1 + self.y >= 0 and \
-                self.board[1 + self.x][-1 + self.y].button['text'] != ''and \
+                self.board[1 + self.x][-1 + self.y].button['text'] == '' and \
                 self.board[1 + self.x][-1 + self.y].chess.color != self.color):   
                 arr.append((1 + self.x, -1 + self.y))
             return arr
@@ -116,11 +117,11 @@ class Chessman():
                 if(self.x == 6):
                     arr.append((-2+ self.x, self.y))
             if(1 + self.y < 8 and \
-                self.board[-1 + self.x][1 + self.y].button['text'] != '' and \
+                self.board[-1 + self.x][1 + self.y].button['text'] == '' and \
                 self.board[-1 + self.x][1 + self.y].chess.color != self.color):   
                 arr.append((-1 + self.x, 1 + self.y))
             if(-1 + self.y >= 0 and \
-                self.board[-1 + self.x][-1 + self.y].button['text'] != ''and \
+                self.board[-1 + self.x][-1 + self.y].button['text'] == '' and \
                 self.board[-1 + self.x][-1 + self.y].chess.color != self.color):   
                 arr.append((-1 + self.x, -1 + self.y))
             return arr

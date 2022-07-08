@@ -4,7 +4,7 @@ from Controller import Controller
 from PIL import Image, ImageTk
 tk = Tk()
 tk.title('Chess')
-tk.attributes('-fullscreen', True)
+#tk.attributes('-fullscreen', True)
 
 def exit_button():
     tk.destroy()
@@ -23,7 +23,7 @@ def Chessboard():
     lbl.pack()
     board.append(lbl)
     img = PhotoImage(file = 'D:\\py\\py.Task\\Chess\\Chess\\Chessman\\BlackKing.gif')
-    l = Label(tk, image = img)
+    l = Label(tk, image = img, text = 'nskdfnkdnkfs', compound= CENTER)
     l.image_ref=img
     l.pack()
 
