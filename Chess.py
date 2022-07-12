@@ -1,7 +1,8 @@
 from tkinter import *
 
-from Controller import Controller
+import Controller
 from PIL import Image, ImageTk
+
 tk = Tk()
 tk.title('Chess')
 #tk.attributes('-fullscreen', True)
@@ -16,7 +17,7 @@ def Chessboard():
         fr = Frame(tk)
         fr.pack()
         for i in range(8):
-            line.append(Controller(j, i, board, fr))
+            line.append(Controller.Controller(j, i, board, fr))
             line[i].draw()
         board.append(line)
     lbl = Label(tk, text="Ход белых")
@@ -31,5 +32,6 @@ def Chessboard():
 
 if __name__ == "__main__":
     exit_b = Button(text = 'X', command = exit_button).place(relx = 0.99)
+    Controller.make_arr()
     Chessboard()
     tk.mainloop()

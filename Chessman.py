@@ -1,5 +1,4 @@
 from tkinter import *
-from PIL import ImageTk
 import Moves
 
 class Chessman():
@@ -65,34 +64,37 @@ class Chessman():
             if self.color == "Black":
                 return '♚'
             return '♔'
+        return ''
     
     def get_img(self):
-        img_path = 'D:\\py\\py.Task\\Chess\\Chess\\Chessman\\'
         if self.type == '♟':
-            return img_path + 'BlackPeshka.gif'
+            return 0
         if self.type == '♙':
-            return img_path + 'WhitePeshka.gif'
+            return 1
         if self.type == 'Rock':
             if self.color == "Black":
-                return img_path + 'BlackRock.gif'
-            return img_path + 'WhiteRock.gif'
+                return 2
+            return 3
         if self.type == 'Knite':
             if self.color == "Black":
-                return img_path + 'BlackKnite.gif'
-            return img_path + 'WhiteKnite.gif'
+                return 4
+            return 5
         if self.type == 'Bishop':
             if self.color == "Black":
-                return img_path + 'BlackBishop.gif'
-            return img_path + 'WhiteBishop.gif'
+                return 6
+            return 7
         if self.type == 'Queen':
             if self.color == "Black":
-                return img_path + 'BlackQueen.gif'
-            return img_path + 'WhiteQueen.gif'
+                return 8
+            return 9
         if self.type == 'King':
             if self.color == "Black":
-                return img_path + 'BlackKing.gif'
-            return img_path + 'WhiteKing.gif'
-        return img_path + 'empty.gif'
+                return 10
+            return 11
+        return 12
+
+    def make_attack(self):
+        return 13
         
     def move(self):
         if self.type == '♟':
@@ -102,28 +104,30 @@ class Chessman():
                 if(self.x == 1):
                     arr.append((2+ self.x, self.y))
             if(1 + self.y < 8 and \
-                self.board[1 + self.x][1 + self.y].button['text'] == '' and \
+                self.board[1 + self.x][1 + self.y].button['text'] != '' and \
                 self.board[1 + self.x][1 + self.y].chess.color != self.color):   
                 arr.append((1 + self.x, 1 + self.y))
             if(-1 + self.y >= 0 and \
-                self.board[1 + self.x][-1 + self.y].button['text'] == '' and \
+                self.board[1 + self.x][-1 + self.y].button['text'] != '' and \
                 self.board[1 + self.x][-1 + self.y].chess.color != self.color):   
                 arr.append((1 + self.x, -1 + self.y))
             return arr
         if self.type == '♙':
             arr = []
+            print(self.board[-1 + self.x][self.y].button['text'])
             if(self.board[-1 + self.x][self.y].button['text'] == ''):   
                 arr.append((-1 + self.x, self.y))
                 if(self.x == 6):
                     arr.append((-2+ self.x, self.y))
             if(1 + self.y < 8 and \
-                self.board[-1 + self.x][1 + self.y].button['text'] == '' and \
+                self.board[-1 + self.x][1 + self.y].button['text'] != '' and \
                 self.board[-1 + self.x][1 + self.y].chess.color != self.color):   
                 arr.append((-1 + self.x, 1 + self.y))
             if(-1 + self.y >= 0 and \
-                self.board[-1 + self.x][-1 + self.y].button['text'] == '' and \
+                self.board[-1 + self.x][-1 + self.y].button['text'] != '' and \
                 self.board[-1 + self.x][-1 + self.y].chess.color != self.color):   
                 arr.append((-1 + self.x, -1 + self.y))
+            print(arr)
             return arr
         if self.type == 'Rock':
             return Moves.Rock_move(self.board, self.color, self.x, self.y)
@@ -133,3 +137,9 @@ class Chessman():
             return Moves.Rock_move(self.board, self.color, self.x, self.y) \
                 + Moves.Bishop_move(self.board, self.color, self.x, self.y)
         return []
+
+    def copy(self):
+        new_chess = Chessman(self.x, self.y, self.board)
+        new_chess.x, new_chess.y = self.x, self.y
+        new_chess.type, new_chess.color = self.type, self.color
+        return new_chess
