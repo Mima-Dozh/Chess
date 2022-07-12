@@ -92,9 +92,6 @@ class Chessman():
                 return 10
             return 11
         return 12
-
-    def make_attack(self):
-        return 13
         
     def move(self):
         if self.type == '♟':
@@ -114,7 +111,6 @@ class Chessman():
             return arr
         if self.type == '♙':
             arr = []
-            print(self.board[-1 + self.x][self.y].button['text'])
             if(self.board[-1 + self.x][self.y].button['text'] == ''):   
                 arr.append((-1 + self.x, self.y))
                 if(self.x == 6):
@@ -127,7 +123,6 @@ class Chessman():
                 self.board[-1 + self.x][-1 + self.y].button['text'] != '' and \
                 self.board[-1 + self.x][-1 + self.y].chess.color != self.color):   
                 arr.append((-1 + self.x, -1 + self.y))
-            print(arr)
             return arr
         if self.type == 'Rock':
             return Moves.Rock_move(self.board, self.color, self.x, self.y)
@@ -136,6 +131,8 @@ class Chessman():
         if self.type == 'Queen':
             return Moves.Rock_move(self.board, self.color, self.x, self.y) \
                 + Moves.Bishop_move(self.board, self.color, self.x, self.y)
+        if self.type == 'Knite':
+            return Moves.Knite_move(self.board, self.color, self.x, self.y)
         return []
 
     def copy(self):

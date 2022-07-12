@@ -30,3 +30,16 @@ def Bishop_move(board, color, x, y):
     arr += move(board, color, x, y, -1, 1)
     arr += move(board, color, x, y, 1,-1)
     return arr
+
+def Knite_move(board, color, x0, y0):
+    arr = []
+    x = [2, 2, 1, 1, -1, -1, -2, -2]
+    y = [-1, 1, -2, 2, -2, 2, -1, 1] 
+    for i in range(8):
+        x1 = x[i] + x0
+        y1 = y[i] + y0
+        if 0 <= x1 < 8 and \
+            0 <= y1 < 8 and \
+            (color != board[x1][y1].chess.color or board[x1][y1].button['text'] == ''):
+            arr.append((x1, y1))
+    return arr

@@ -23,6 +23,19 @@ def make_arr():
     create_image(img_path + 'BlackKing.gif')
     create_image(img_path + 'WhiteKing.gif')
     create_image(img_path + 'empty.gif')
+
+    create_image(img_path + 'BlackPeshka_attack.gif')
+    create_image(img_path + 'WhitePeshka_attack.gif')
+    create_image(img_path + 'BlackRock_attack.gif')
+    create_image(img_path + 'WhiteRock_attack.gif')
+    create_image(img_path + 'BlackKnite_attack.gif')
+    create_image(img_path + 'WhiteKnite_attack.gif')
+    create_image(img_path + 'BlackBishop_attack.gif')
+    create_image(img_path + 'WhiteBishop_attack.gif')
+    create_image(img_path + 'BlackQueen_attack.gif')
+    create_image(img_path + 'WhiteQueen_attack.gif')
+    create_image(img_path + 'BlackKing_attack.gif')
+    create_image(img_path + 'WhiteKing_attack.gif')
     create_image(img_path + 'empty_attack.gif')
 
 player_index = 1
@@ -57,11 +70,10 @@ class Controller():
                 return
             m = self.chess.move()
             for point in m:
-                variant = board[point[0]][point[1]].button
-                board[point[0]][point[1]].chess_attack = self.chess.copy()
-                variant['text'] = '🟢'
-                variant.config( image = photos[self.chess.make_attack()] )
-                variant['fg'] = 'green'
+                variant = board[point[0]][point[1]]
+                variant.chess_attack = self.chess.copy()
+                variant.button['text'] = '🟢'
+                variant.button.config( image = photos[variant.chess.get_img() + 13] )
         
         global photos
         self.chess = Chessman(position_x, position_y, board)
