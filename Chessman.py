@@ -3,6 +3,7 @@ import Moves
 
 class Chessman():
     def __init__(self, x, y, board):
+        self.king_position = Moves.king_position
         self.x = x
         self.y = y
         self.board = board
@@ -11,10 +12,10 @@ class Chessman():
             (0, 7): 'Rock',
             (7, 0): 'Rock',
             (7, 7): 'Rock',
-            (0, 1): 'Knite',
-            (0, 6): 'Knite',
-            (7, 1): 'Knite',
-            (7, 6): 'Knite',
+            (0, 1): 'Knight',
+            (0, 6): 'Knight',
+            (7, 1): 'Knight',
+            (7, 6): 'Knight',
             (0, 2): 'Bishop',
             (0, 5): 'Bishop',
             (7, 2): 'Bishop',
@@ -25,9 +26,9 @@ class Chessman():
             (7, 4): 'King'
         }
         for i in range(8):
-            chess_position[(1, i)] = '♟'
+            chess_position[(1, i)] = 'Pawn'
         for i in range(8):
-            chess_position[(6, i)] = '♙'
+            chess_position[(6, i)] = 'Pawn'
         self.type = ' '
         if chess_position.get((x,y)) is not None:
             self.type = chess_position[(x, y)]
@@ -40,15 +41,15 @@ class Chessman():
         self.color = ""
     
     def get_type(self):
-        if self.type == '♟':
-            return '♟'
-        if self.type == '♙':
+        if self.type == 'Pawn':
+            if self.color == "Black":
+                return '♟'
             return '♙'
         if self.type == 'Rock':
             if self.color == "Black":
                 return '♜'
             return '♖'
-        if self.type == 'Knite':
+        if self.type == 'Knight':
             if self.color == "Black":
                 return '♞'
             return '♘'
@@ -67,15 +68,15 @@ class Chessman():
         return ''
     
     def get_img(self):
-        if self.type == '♟':
-            return 0
-        if self.type == '♙':
+        if self.type == 'Pawn':
+            if self.color == "Black":
+                return 0
             return 1
         if self.type == 'Rock':
             if self.color == "Black":
                 return 2
             return 3
-        if self.type == 'Knite':
+        if self.type == 'Knight':
             if self.color == "Black":
                 return 4
             return 5
@@ -92,49 +93,30 @@ class Chessman():
                 return 10
             return 11
         return 12
-        
-    def move(self):
-        if self.type == '♟':
-            arr = []
-            if(self.board[1 + self.x][self.y].button['text'] == ''):   
-                arr.append((1 + self.x, self.y))
-                if(self.x == 1):
-                    arr.append((2+ self.x, self.y))
-            if(1 + self.y < 8 and \
-                self.board[1 + self.x][1 + self.y].button['text'] != '' and \
-                self.board[1 + self.x][1 + self.y].chess.color != self.color):   
-                arr.append((1 + self.x, 1 + self.y))
-            if(-1 + self.y >= 0 and \
-                self.board[1 + self.x][-1 + self.y].button['text'] != '' and \
-                self.board[1 + self.x][-1 + self.y].chess.color != self.color):   
-                arr.append((1 + self.x, -1 + self.y))
-            return arr
-        if self.type == '♙':
-            arr = []
-            if(self.board[-1 + self.x][self.y].button['text'] == ''):   
-                arr.append((-1 + self.x, self.y))
-                if(self.x == 6):
-                    arr.append((-2+ self.x, self.y))
-            if(1 + self.y < 8 and \
-                self.board[-1 + self.x][1 + self.y].button['text'] != '' and \
-                self.board[-1 + self.x][1 + self.y].chess.color != self.color):   
-                arr.append((-1 + self.x, 1 + self.y))
-            if(-1 + self.y >= 0 and \
-                self.board[-1 + self.x][-1 + self.y].button['text'] != '' and \
-                self.board[-1 + self.x][-1 + self.y].chess.color != self.color):   
-                arr.append((-1 + self.x, -1 + self.y))
-            return arr
-        if self.type == 'Rock':
-            return Moves.Rock_move(self.board, self.color, self.x, self.y)
-        if self.type == 'Bishop':
-            return Moves.Bishop_move(self.board, self.color, self.x, self.y)
-        if self.type == 'Queen':
-            return Moves.Rock_move(self.board, self.color, self.x, self.y) \
-                + Moves.Bishop_move(self.board, self.color, self.x, self.y)
-        if self.type == 'Knite':
-            return Moves.Knite_move(self.board, self.color, self.x, self.y)
-        return []
 
+    def find_king(self):
+        if self.type == 'King':
+            if self.color == "Black":
+                self.king_position[1] = (self.x, self.y)
+            else:
+                self.king_position[0] = (self.x, self.y)
+    
+    def move(self, defanse = True):
+        if self.type == 'Pawn':
+            return Moves.Pawn_move(self.board, self.color, self.x, self.y, defanse)
+        if self.type == 'Rock':
+            return Moves.Rock_move(self.board, self.color, self.x, self.y, defanse)
+        if self.type == 'Bishop':
+            return Moves.Bishop_move(self.board, self.color, self.x, self.y, defanse)
+        if self.type == 'Queen':
+            return Moves.Rock_move(self.board, self.color, self.x, self.y, defanse) \
+                + Moves.Bishop_move(self.board, self.color, self.x, self.y, defanse)
+        if self.type == 'Knight':
+            return Moves.Knight_move(self.board, self.color, self.x, self.y, defanse)
+        if self.type == 'King':
+            return Moves.King_move(self.board, self.color, self.x, self.y, defanse)
+        return []
+                        
     def copy(self):
         new_chess = Chessman(self.x, self.y, self.board)
         new_chess.x, new_chess.y = self.x, self.y

@@ -50,10 +50,12 @@ class Controller():
                 self.chess = self.chess_attack
                 self.button['image'] = board[self.chess.x][self.chess.y].button['image']
                 self.button['text'] = board[self.chess.x][self.chess.y].button['text']
+                board[self.chess.x][self.chess.y].chess.defolt()
                 board[self.chess.x][self.chess.y].defolt()
-                self.chess.x = self.X
-                self.chess.y = self.Y
+                self.chess.x = self.x
+                self.chess.y = self.y
                 end = True
+                self.chess.find_king()
                 player_index *= -1
                 if player_index == 1:
                     board[8]['text'] = 'Ход белых'
@@ -78,13 +80,15 @@ class Controller():
         global photos
         self.chess = Chessman(position_x, position_y, board)
         self.chess_attack = self.chess
-        self.X = position_x
-        self.Y = position_y
-        self.button = Button(frame, 
+        self.x = position_x
+        self.y = position_y
+        self.frame = frame
+        self.button = Button(frame,
                     image = photos[self.chess.get_img()],
                     text = self.chess.get_type(),
                     width="50", 
                     height="50")
+        dir(self.button)
         if (position_x + position_y) % 2 == 1:
             self.button['bg'] = "#ffffff"
         else:
@@ -94,7 +98,11 @@ class Controller():
     def draw(self):
         self.button.pack(side="left")
 
+    def copy(self):
+        new_self = Controller(self.x, self.y, self.board, )
+
     def defolt(self):
         self.chess_attack.defolt()
         self.button['text'] = self.chess.get_type()
+        print(self.button['text'])
         self.button.config( image = photos[self.chess.get_img()] )

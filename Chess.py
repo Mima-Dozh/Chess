@@ -6,11 +6,14 @@ from PIL import Image, ImageTk
 tk = Tk()
 tk.title('Chess')
 #tk.attributes('-fullscreen', True)
+tk.geometry('960x720')
 
 def exit_button():
     tk.destroy()
 
 def Chessboard():
+    l = Label(tk, text = 'Удачной игры', height = 5, font = 20, compound= CENTER)
+    l.pack()
     board = []
     for j in range(8):
         line = []
@@ -23,10 +26,6 @@ def Chessboard():
     lbl = Label(tk, text="Ход белых")
     lbl.pack()
     board.append(lbl)
-    img = PhotoImage(file = 'D:\\py\\py.Task\\Chess\\Chess\\Chessman\\BlackKing.gif')
-    l = Label(tk, image = img, text = 'nskdfnkdnkfs', compound= CENTER)
-    l.image_ref=img
-    l.pack()
 
 
 
