@@ -43,11 +43,14 @@ player_index = 1
 class Controller():
     def __init__(self, position_x, position_y, board, frame):
         def change_position():
+            #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            #Вынести данную функцию отбельно
+            #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             end = False
             global player_index
             global change_label
             if(self.button['text'] == '🟢'):
-                self.chess = self.chess_attack
+                self.chess = self.chess_attack.copy()
                 self.button['image'] = board[self.chess.x][self.chess.y].button['image']
                 self.button['text'] = board[self.chess.x][self.chess.y].button['text']
                 board[self.chess.x][self.chess.y].chess.defolt()
@@ -57,7 +60,7 @@ class Controller():
                 end = True
                 self.chess.find_king()
                 player_index *= -1
-                if player_index == 1:
+                if player_index == 1:  
                     board[8]['text'] = 'Ход белых'
                 else:
                     board[8]['text'] = 'Ход черных'
@@ -66,7 +69,6 @@ class Controller():
                 for i in range(8):
                     if(board[j][i].button['text'] == '🟢'):
                         board[j][i].defolt()
-
             if end or (self.chess.color == 'White' and player_index != 1 or \
                         self.chess.color != 'White' and player_index == 1):
                 return
@@ -79,7 +81,7 @@ class Controller():
         
         global photos
         self.chess = Chessman(position_x, position_y, board)
-        self.chess_attack = self.chess
+        self.chess_attack = self.chess.copy()
         self.x = position_x
         self.y = position_y
         self.frame = frame
@@ -104,5 +106,4 @@ class Controller():
     def defolt(self):
         self.chess_attack.defolt()
         self.button['text'] = self.chess.get_type()
-        print(self.button['text'])
         self.button.config( image = photos[self.chess.get_img()] )

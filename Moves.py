@@ -1,5 +1,5 @@
 
-king_position = [(7, 4), (0, 4)]
+king_position = [(7, 4, 0), (0, 4, 0)]
 
 def move(board, color, x, y, x0, y0, defanse):
         arr = []
@@ -12,16 +12,10 @@ def move(board, color, x, y, x0, y0, defanse):
                     board[x1][y1].button['text'] != '':
                 break
             if defanse:
-                str = board[x1][y1].button['text']
-                board[x1][y1].button['text'] = board[x][y].button['text']
-                board[x][y].button['text'] = ''
                 king = king_position[1]
                 if color == 'White':
                     king = king_position[0]
-                t = Test_point(board, board[king[0]][king[1]].chess)
-                board[x][y].button['text'] = board[x1][y1].button['text']
-                board[x1][y1].button['text'] = str
-                if t:
+                if Change_position(board, board[king[0]][king[1]].chess, x, y, x1, y1):
                     break
             arr.append((x1, y1))
             if(color != board[x1][y1].chess.color and \
@@ -32,20 +26,31 @@ def move(board, color, x, y, x0, y0, defanse):
 def Pawn_move(board, color, x, y, defanse):
     arr = []
     k = 1
+    king = king_position[1]
     if color == 'White':
+        king = king_position[0]
         k = -1
-    if(board[k + x][y].button['text'] == ''):   
-        arr.append((k + x, y))
+    if(board[k + x][y].button['text'] == ''): 
+        if not defanse or \
+            not Change_position(board, board[king[0]][king[1]].chess, x, y, k + x, y):
+            arr.append((k + x, y))
         if(x == 1 and color == 'Black' or \
-            x == 6 and color == 'White'):
+            x == 6 and color == 'White') and \
+            board[2*k + x][y].button['text'] == '' and \
+            (not defanse or \
+            not Change_position(board, board[king[0]][king[1]].chess, x, y, 2 * k + x, y)):
             arr.append((2*k + x, y))
-    if(1 + y < 8 and \
+    if 1 + y < 8 and \
         board[k + x][1 + y].button['text'] != '' and \
-        board[k + x][1 + y].chess.color != color):   
+        board[k + x][1 + y].chess.color != color and \
+        (not defanse or \
+            not Change_position(board, board[king[0]][king[1]].chess, x, y, k + x, 1 + y)):   
         arr.append((k + x, 1 + y))
-    if(-1 + y >= 0 and \
+    if -1 + y >= 0 and \
         board[k + x][-1 + y].button['text'] != '' and \
-        board[k + x][-1 + y].chess.color != color):   
+        board[k + x][-1 + y].chess.color != color and \
+        (not defanse or \
+            not Change_position(board, board[king[0]][king[1]].chess, x, y, k + x, -1 + y)):   
         arr.append((k + x, -1 + y))
     return arr
 
@@ -68,27 +73,66 @@ def Bishop_move(board, color, x, y, defanse):
 def Knight_move(board, color, x0, y0, defanse):
     arr = []
     x = [2, 2, 1, 1, -1, -1, -2, -2]
-    y = [-1, 1, -2, 2, -2, 2, -1, 1] 
+    y = [-1, 1, -2, 2, -2, 2, -1, 1]
+    king = king_position[1]
+    if color == 'White':
+        king = king_position[0]
     for i in range(8):
         x1 = x[i] + x0
         y1 = y[i] + y0
         if 0 <= x1 < 8 and \
             0 <= y1 < 8 and \
             (color != board[x1][y1].chess.color or \
-                board[x1][y1].button['text'] == ''):
+                board[x1][y1].button['text'] == '') and \
+            (not defanse or \
+                not Change_position(board, board[king[0]][king[1]].chess, x0, y0, x1, y1)):
             arr.append((x1, y1))
     return arr
 
 def King_move(board, color, x0, y0, defanse):
     arr = []
-    for x in range(-1, 2):
-        for y in range(-1, 2):
-            if 0 <= x + x0 < 8 and \
-                0 <= y + y0 < 8 and \
-                (color != board[x + x0][y + y0].chess.color or \
-                    board[x + x0][y + y0].button['text'] == ''):
+    print(*king_position)
+    t = king_position[1][2]
+    if color == 'White':
+        t = king_position[0][2]
+    dx = [-1, 0, 1]
+    dy = [-1, 0, 1]
+    pair = []
+    for x in dx:
+        for y in dy:
+            pair.append((x, y))
+    for i in pair:
+        x = i[0]
+        y = i[1]
+        if 0 <= x + x0 < 8 and \
+            0 <= y + y0 < 8 and \
+            (color != board[x + x0][y + y0].chess.color or \
+                board[x + x0][y + y0].button['text'] == ''):
+                king = board[x0][y0].chess
+                point = (x0, y0)
+                king.x, king.y = x + x0, y + y0
+                if not defanse or \
+                not Test_point(board, king):
                     arr.append((x + x0, y + y0))
+                king.x, king.y = point[0], point[1]
     return arr
+
+def a00():
+    pass
+
+def Change_position(board, king, x, y, x1, y1):
+    str = board[x1][y1].button['text']
+    board[x1][y1].button['text'] = board[x][y].button['text']
+    board[x][y].button['text'] = ''
+    chess = board[x1][y1].chess.copy()
+    board[x1][y1].chess = board[x][y].chess.copy()
+    board[x][y].chess.defolt()
+    t = Test_point(board, king)
+    board[x][y].button['text'] = board[x1][y1].button['text']
+    board[x1][y1].button['text'] = str
+    board[x][y].chess = board[x1][y1].chess.copy()
+    board[x1][y1].chess = chess.copy()
+    return t
 
 def Test_point(board, king):
     all_point = Rock_move(board, king.color, king.x, king.y, False) \

@@ -97,9 +97,9 @@ class Chessman():
     def find_king(self):
         if self.type == 'King':
             if self.color == "Black":
-                self.king_position[1] = (self.x, self.y)
+                self.king_position[1] = (self.x, self.y, 1)
             else:
-                self.king_position[0] = (self.x, self.y)
+                self.king_position[0] = (self.x, self.y, 1)
     
     def move(self, defanse = True):
         if self.type == 'Pawn':
@@ -109,8 +109,9 @@ class Chessman():
         if self.type == 'Bishop':
             return Moves.Bishop_move(self.board, self.color, self.x, self.y, defanse)
         if self.type == 'Queen':
-            return Moves.Rock_move(self.board, self.color, self.x, self.y, defanse) \
-                + Moves.Bishop_move(self.board, self.color, self.x, self.y, defanse)
+            board, color, x, y = self.board, self.color, self.x, self.y
+            return Moves.Rock_move(board, color, x, y, defanse) \
+                + Moves.Bishop_move(board, color, x, y, defanse)
         if self.type == 'Knight':
             return Moves.Knight_move(self.board, self.color, self.x, self.y, defanse)
         if self.type == 'King':
