@@ -41,57 +41,41 @@ class Chessman():
         self.color = ""
     
     def get_type(self):
-        if self.type == 'Pawn':
-            if self.color == "Black":
-                return '♟'
-            return '♙'
-        if self.type == 'Rock':
-            if self.color == "Black":
-                return '♜'
-            return '♖'
-        if self.type == 'Knight':
-            if self.color == "Black":
-                return '♞'
-            return '♘'
-        if self.type == 'Bishop':
-            if self.color == "Black":
-                return '♝'
-            return '♗'
-        if self.type == 'Queen':
-            if self.color == "Black":
-                return '♛'
-            return '♕'
-        if self.type == 'King':
-            if self.color == "Black":
-                return '♚'
-            return '♔'
+        chess_types ={
+            ('Pawn', "Black"): '♟',
+            ('Pawn', "White"): '♙',
+            ('Rock', "Black"): '♜',
+            ('Rock', "White"): '♖',
+            ('Knight', "Black"): '♞',
+            ('Knight', "White"): '♘',
+            ('Bishop', "Black"): '♝',
+            ('Bishop', "White"): '♟',
+            ('Queen', "Black"): '♛',
+            ('Queen', "White"): '♕',
+            ('King', "Black"): '♚',
+            ('King', "White"): '♔'
+        }
+        if chess := chess_types.get((self.type, self.color)):
+            return chess
         return ''
     
     def get_img(self):
-        if self.type == 'Pawn':
-            if self.color == "Black":
-                return 0
-            return 1
-        if self.type == 'Rock':
-            if self.color == "Black":
-                return 2
-            return 3
-        if self.type == 'Knight':
-            if self.color == "Black":
-                return 4
-            return 5
-        if self.type == 'Bishop':
-            if self.color == "Black":
-                return 6
-            return 7
-        if self.type == 'Queen':
-            if self.color == "Black":
-                return 8
-            return 9
-        if self.type == 'King':
-            if self.color == "Black":
-                return 10
-            return 11
+        chess_types ={
+            ('Pawn', "Black"): 0,
+            ('Pawn', "White"): 1,
+            ('Rock', "Black"): 2,
+            ('Rock', "White"): 3,
+            ('Knight', "Black"): 4,
+            ('Knight', "White"): 5,
+            ('Bishop', "Black"): 6,
+            ('Bishop', "White"): 7,
+            ('Queen', "Black"): 8,
+            ('Queen', "White"): 9,
+            ('King', "Black"): 10,
+            ('King', "White"): 11
+        }
+        if (chess := chess_types.get((self.type, self.color))) is not None:
+            return chess
         return 12
 
     def find_king(self):
