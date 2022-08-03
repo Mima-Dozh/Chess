@@ -120,10 +120,26 @@ class Chessman():
         self_button['text'] = self.board[self.x][self.y].button['text']
         self.board[self.x][self.y].chess.defolt()
         self.board[self.x][self.y].defolt()
+        self.check_rock()
         self.x = x
         self.y = y
         self.board[self.x][self.y].chess = self
         self.find_king()
+        
+    def check_rock(self):
+        if self.type != "Rock":
+            return
+        if self.color == "Black" and self.x == 0:
+            self.rock_side(1)
+        elif self.color == "White" and self.x == 7:
+            self.rock_side(0)
+            
+    def rock_side(self, color):
+        if self.y == 0:
+            Moves.rock_left[color] = True
+        else:
+            Moves.rock_right[color] = True
+        print(Moves.rock_left, Moves.rock_right)
     
     def move(self, defanse = True):
         if self.type == 'Pawn':

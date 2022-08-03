@@ -115,16 +115,11 @@ def King_move(board, color, x0, y0, defanse):
             (color != board[x + x0][y + y0].chess.color or \
                 board[x + x0][y + y0].button['text'] == ''):
                 king = board[x0][y0].chess.copy()
-                board[x0][y0].button['text'] = ''
-                board[x0][y0].chess.defolt()
-                point = (x0, y0)
-                king.x, king.y = x + x0, y + y0
+                king.x , king.y = x + x0, y + y0
                 if not defanse or \
-                not Test_point(board, king):
+                not Change_position(board, king, x0, y0, x + x0, y + y0):
                     arr.append((x + x0, y + y0))
-                king.x, king.y = point[0], point[1]
-                board[x0][y0].button['text'] = king.get_type()
-                board[x0][y0].chess = king
+                king.x, king.y = x0, y0
     if not t and not rock[0]:
         arr += move_00(board, board[x0][y0].chess, board[x0][0].chess, -1)
     if not t and not rock[1]:
@@ -154,7 +149,6 @@ def Change_position(board, king, x, y, x1, y1):
     board[x][y].chess.defolt()
     t = Test_point(board, king)
     board[x][y].button['text'] = board[x1][y1].button['text']
-    
     board[x1][y1].button['text'] = s
     board[x][y].chess = board[x1][y1].chess.copy()
     board[x1][y1].chess = chess.copy()

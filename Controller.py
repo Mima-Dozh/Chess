@@ -44,6 +44,7 @@ class Controller():
     def __init__(self, position_x, position_y, board, frame):
         def change_position():
             '''!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            TODO:
             Вынести данную функцию отбельно
             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'''
             end = False
