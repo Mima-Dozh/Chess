@@ -83,16 +83,14 @@ class Chessman():
             king_position = self.king_position[0]
             if self.color == "Black":
                 king_position = self.king_position[1]
-            if not king_position[2]:
-                if abs(king_position[1] - self.y) == 2:
-                    delta = king_position[1] - self.y
-                    rock = self.board[self.x][self.y + delta//2]
-                    rock_position = self.board[self.x][7]
-                    if delta > 0:
-                        rock_position = self.board[self.x][0]
-                    rock.chess_attack = rock_position.chess.copy()
-                    rock.chess.change_position\
-                        (rock_position.button, rock.chess_attack, self.x, self.y + delta//2)
+            if not king_position[2] and abs(delta := king_position[1] - self.y) == 2:
+                rock = self.board[self.x][self.y + delta//2]
+                rock_position = self.board[self.x][7]
+                if delta > 0:
+                    rock_position = self.board[self.x][0]
+                rock.chess_attack = rock_position.chess.copy()
+                rock.chess.change_position\
+                    (rock_position.button, rock.chess_attack, self.x, self.y + delta//2)
             if self.color == "Black":
                 self.king_position[1] = (self.x, self.y, True)
             else:
@@ -100,7 +98,7 @@ class Chessman():
                 
     def change_position(self, self_button, chess_attack, x, y):
         self = chess_attack.copy()
-        self_button['image'] = self.board[self.x][self.y].button['image']
+        self_button['image  '] = self.board[self.x][self.y].button['image']
         self_button['text'] = self.board[self.x][self.y].button['text']
         self.board[self.x][self.y].chess.defolt()
         self.board[self.x][self.y].defolt()
