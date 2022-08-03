@@ -1,1 +1,0 @@
-board[self.chess.x][self.chess.y].button['image
