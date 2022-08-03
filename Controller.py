@@ -43,22 +43,16 @@ player_index = 1
 class Controller():
     def __init__(self, position_x, position_y, board, frame):
         def change_position():
-            #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            #Вынести данную функцию отбельно
-            #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            '''!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            Вынести данную функцию отбельно
+            !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'''
             end = False
             global player_index
             global change_label
             if(self.button['text'] == '🟢'):
-                self.chess = self.chess_attack.copy()
-                self.button['image'] = board[self.chess.x][self.chess.y].button['image']
-                self.button['text'] = board[self.chess.x][self.chess.y].button['text']
-                board[self.chess.x][self.chess.y].chess.defolt()
-                board[self.chess.x][self.chess.y].defolt()
-                self.chess.x = self.x
-                self.chess.y = self.y
+                self.chess.change_position\
+                    (self.button, self.chess_attack, self.x, self.y)
                 end = True
-                self.chess.find_king()
                 player_index *= -1
                 if player_index == 1:  
                     board[8]['text'] = 'Ход белых'

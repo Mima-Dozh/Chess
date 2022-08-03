@@ -96,10 +96,34 @@ class Chessman():
 
     def find_king(self):
         if self.type == 'King':
+            king_position = self.king_position[0]
             if self.color == "Black":
-                self.king_position[1] = (self.x, self.y, 1)
+                king_position = self.king_position[1]
+            if not king_position[2]:
+                if abs(king_position[1] - self.y) == 2:
+                    delta = king_position[1] - self.y
+                    rock = self.board[self.x][self.y + delta//2]
+                    rock_position = self.board[self.x][7]
+                    if delta > 0:
+                        rock_position = self.board[self.x][0]
+                    rock.chess_attack = rock_position.chess.copy()
+                    rock.chess.change_position\
+                        (rock_position.button, rock.chess_attack, self.x, self.y + delta//2)
+            if self.color == "Black":
+                self.king_position[1] = (self.x, self.y, True)
             else:
-                self.king_position[0] = (self.x, self.y, 1)
+                self.king_position[0] = (self.x, self.y, True)
+                
+    def change_position(self, self_button, chess_attack, x, y):
+        self = chess_attack.copy()
+        self_button['image'] = self.board[self.x][self.y].button['image']
+        self_button['text'] = self.board[self.x][self.y].button['text']
+        self.board[self.x][self.y].chess.defolt()
+        self.board[self.x][self.y].defolt()
+        self.x = x
+        self.y = y
+        self.board[self.x][self.y].chess = self
+        self.find_king()
     
     def move(self, defanse = True):
         if self.type == 'Pawn':
@@ -117,6 +141,9 @@ class Chessman():
         if self.type == 'King':
             return Moves.King_move(self.board, self.color, self.x, self.y, defanse)
         return []
+    
+    def write_motion(move_from, move_to, chess):
+        Moves.chess_moves.append(chess.type  + move_from + '-' + move_to)
                         
     def copy(self):
         new_chess = Chessman(self.x, self.y, self.board)

@@ -1,5 +1,10 @@
 
-king_position = [(7, 4, 0), (0, 4, 0)]
+
+
+king_position = [(7, 4, False), (0, 4, False)]
+rock_left = [False, False]
+rock_right = [False, False]
+chess_moves = []
 
 def move(board, color, x, y, x0, y0, defanse):
         arr = []
@@ -91,10 +96,11 @@ def Knight_move(board, color, x0, y0, defanse):
 
 def King_move(board, color, x0, y0, defanse):
     arr = []
-    print(*king_position)
     t = king_position[1][2]
+    rock = [rock_left[1], rock_right[1]]
     if color == 'White':
         t = king_position[0][2]
+        rock = [rock_left[0], rock_right[0]]
     dx = [-1, 0, 1]
     dy = [-1, 0, 1]
     pair = []
@@ -108,20 +114,39 @@ def King_move(board, color, x0, y0, defanse):
             0 <= y + y0 < 8 and \
             (color != board[x + x0][y + y0].chess.color or \
                 board[x + x0][y + y0].button['text'] == ''):
-                king = board[x0][y0].chess
+                king = board[x0][y0].chess.copy()
+                board[x0][y0].button['text'] = ''
+                board[x0][y0].chess.defolt()
                 point = (x0, y0)
                 king.x, king.y = x + x0, y + y0
                 if not defanse or \
                 not Test_point(board, king):
                     arr.append((x + x0, y + y0))
                 king.x, king.y = point[0], point[1]
+                board[x0][y0].button['text'] = king.get_type()
+                board[x0][y0].chess = king
+    if not t and not rock[0]:
+        arr += move_00(board, board[x0][y0].chess, board[x0][0].chess, -1)
+    if not t and not rock[1]:
+        arr += move_00(board, board[x0][y0].chess, board[x0][7].chess, 1)
     return arr
 
-def a00():
-    pass
+def move_00(board, king, rock, k):
+    point = (king.x, king.y)
+    i = 0
+    while board[king.x][point[1] + i * k].chess.type != 'Rock':
+        king.y = point[1] + i * k
+        if board[king.x][point[1] + i * k].chess.type != 'King' and \
+            board[king.x][point[1] + i * k].button['text'] != '' or \
+            Test_point(board, king):
+            king.y = point[1]
+            return []
+        i+=1
+    king.y = point[1]
+    return [(point[0], point[1] + 2 * k)]
 
 def Change_position(board, king, x, y, x1, y1):
-    str = board[x1][y1].button['text']
+    s = board[x1][y1].button['text']
     board[x1][y1].button['text'] = board[x][y].button['text']
     board[x][y].button['text'] = ''
     chess = board[x1][y1].chess.copy()
@@ -129,7 +154,8 @@ def Change_position(board, king, x, y, x1, y1):
     board[x][y].chess.defolt()
     t = Test_point(board, king)
     board[x][y].button['text'] = board[x1][y1].button['text']
-    board[x1][y1].button['text'] = str
+    
+    board[x1][y1].button['text'] = s
     board[x][y].chess = board[x1][y1].chess.copy()
     board[x1][y1].chess = chess.copy()
     return t
