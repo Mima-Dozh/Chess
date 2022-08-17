@@ -1,6 +1,5 @@
 from tkinter import *
 from Chessman import Chessman
-from PIL import ImageTk
 
 photos = []
 
@@ -9,7 +8,7 @@ def create_image(path):
     photos.append(img)
 
 def make_arr():
-    img_path = 'D:\\py\\py.Task\\Chess\\Chess\\Chessman\\'
+    img_path = 'Chessman\\'
     create_image(img_path + 'BlackPeshka.gif')
     create_image(img_path + 'WhitePeshka.gif')
     create_image(img_path + 'BlackRock.gif')
@@ -49,7 +48,6 @@ class Controller():
             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'''
             end = False
             global player_index
-            global change_label
             if(self.button['text'] == '🟢'):
                 self.chess.change_position\
                     (self.button, self.chess_attack, self.x, self.y)
@@ -79,21 +77,19 @@ class Controller():
         self.chess_attack = self.chess.copy()
         self.x = position_x
         self.y = position_y
-        self.frame = frame
         self.button = Button(frame,
                     image = photos[self.chess.get_img()],
                     text = self.chess.get_type(),
-                    width="50", 
-                    height="50")
-        dir(self.button)
+                    width=50, 
+                    height=50,
+                    command=change_position)
         if (position_x + position_y) % 2 == 1:
             self.button['bg'] = "#ffffff"
         else:
             self.button['bg'] = "#aaaaaa"
-        self.button.config(command=change_position)
 
     def draw(self):
-        self.button.pack(side="left")
+        self.button.grid(column=self.y+1, row = self.x+1)
 
     def copy(self):
         new_self = Controller(self.x, self.y, self.board, )

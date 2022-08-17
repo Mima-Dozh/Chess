@@ -1,6 +1,7 @@
 from tkinter import *
 import Moves
 
+number = 1
 class Chessman():
     def __init__(self, x, y, board):
         self.king_position = Moves.king_position
@@ -60,6 +61,7 @@ class Chessman():
         return ''
     
     def get_img(self):
+        
         chess_types ={
             ('Pawn', "Black"): 0,
             ('Pawn', "White"): 1,
@@ -98,7 +100,7 @@ class Chessman():
                 
     def change_position(self, self_button, chess_attack, x, y):
         self = chess_attack.copy()
-        self_button['image  '] = self.board[self.x][self.y].button['image']
+        self_button['image'] = self.board[self.x][self.y].button['image']
         self_button['text'] = self.board[self.x][self.y].button['text']
         self.board[self.x][self.y].chess.defolt()
         self.board[self.x][self.y].defolt()
@@ -107,6 +109,22 @@ class Chessman():
         self.y = y
         self.board[self.x][self.y].chess = self
         self.find_king()
+        self.write_move()
+        
+    def write_move(self):
+        global number
+        s = ""
+        if self.color == 'White':
+            s += str(number) + '.'
+        else:
+            number += 1
+        if(self.type != 'Pawn'):
+            s += self.get_type() + '-'
+        s += chr(ord('a') + self.y) + str(8 - self.x) + ' '
+        self.board[-1].insert(END, s)
+        
+    #def write_move(figure, board, old, new, nunber = ''):
+    #    board[-1].insert(END, ', ' + nunber + figure, old + '-' + new)
         
     def check_rock(self):
         if self.type != "Rock":
@@ -115,7 +133,12 @@ class Chessman():
             self.rock_side(1)
         elif self.color == "White" and self.x == 7:
             self.rock_side(0)
-            
+    
+    def check_pawn(self):
+        if self.type('Pawn') and \
+            (self.x == 0 or self.x == 7):
+                pass
+    
     def rock_side(self, color):
         if self.y == 0:
             Moves.rock_left[color] = True
