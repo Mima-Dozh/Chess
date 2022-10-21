@@ -1,41 +1,5 @@
 from tkinter import *
-from Chessman import Chessman
-
-photos = []
-
-def create_image(path):
-    img = PhotoImage(file = path)
-    photos.append(img)
-
-def make_arr():
-    img_path = 'Chessman\\'
-    create_image(img_path + 'BlackPeshka.gif')
-    create_image(img_path + 'WhitePeshka.gif')
-    create_image(img_path + 'BlackRock.gif')
-    create_image(img_path + 'WhiteRock.gif')
-    create_image(img_path + 'BlackKnite.gif')
-    create_image(img_path + 'WhiteKnite.gif')
-    create_image(img_path + 'BlackBishop.gif')
-    create_image(img_path + 'WhiteBishop.gif')
-    create_image(img_path + 'BlackQueen.gif')
-    create_image(img_path + 'WhiteQueen.gif')
-    create_image(img_path + 'BlackKing.gif')
-    create_image(img_path + 'WhiteKing.gif')
-    create_image(img_path + 'empty.gif')
-
-    create_image(img_path + 'BlackPeshka_attack.gif')
-    create_image(img_path + 'WhitePeshka_attack.gif')
-    create_image(img_path + 'BlackRock_attack.gif')
-    create_image(img_path + 'WhiteRock_attack.gif')
-    create_image(img_path + 'BlackKnite_attack.gif')
-    create_image(img_path + 'WhiteKnite_attack.gif')
-    create_image(img_path + 'BlackBishop_attack.gif')
-    create_image(img_path + 'WhiteBishop_attack.gif')
-    create_image(img_path + 'BlackQueen_attack.gif')
-    create_image(img_path + 'WhiteQueen_attack.gif')
-    create_image(img_path + 'BlackKing_attack.gif')
-    create_image(img_path + 'WhiteKing_attack.gif')
-    create_image(img_path + 'empty_attack.gif')
+from Chessman import *
 
 player_index = 1
 
@@ -70,15 +34,14 @@ class Controller():
                 variant = board[point[0]][point[1]]
                 variant.chess_attack = self.chess.copy()
                 variant.button['text'] = '🟢'
-                variant.button.config( image = photos[variant.chess.get_img() + 13] )
+                variant.button.config( image = get_photo(variant.chess.get_img() + 13) )
         
-        global photos
         self.chess = Chessman(position_x, position_y, board)
         self.chess_attack = self.chess.copy()
         self.x = position_x
         self.y = position_y
         self.button = Button(frame,
-                    image = photos[self.chess.get_img()],
+                    image = get_photo(self.chess.get_img()),
                     text = self.chess.get_type(),
                     width=50, 
                     height=50,
@@ -97,4 +60,4 @@ class Controller():
     def defolt(self):
         self.chess_attack.defolt()
         self.button['text'] = self.chess.get_type()
-        self.button.config( image = photos[self.chess.get_img()] )
+        self.button.config( image = get_photo(self.chess.get_img()) )

@@ -1,5 +1,47 @@
 from tkinter import *
 import Moves
+import re
+from pathlib import Path 
+from functools import partial
+
+photos = []
+
+def get_photo(i):
+    return photos[i]
+
+def create_image(path):
+    img = PhotoImage(file = path)
+    photos.append(img)
+
+def make_arr():
+    img_path = 'Chessman'
+    create_image(Path(img_path, 'BlackPeshka.gif'))
+    create_image(Path(img_path,'WhitePeshka.gif'))
+    create_image(Path(img_path,'BlackKnite.gif'))
+    create_image(Path(img_path,'WhiteKnite.gif'))
+    create_image(Path(img_path,'BlackBishop.gif'))
+    create_image(Path(img_path,'WhiteBishop.gif'))
+    create_image(Path(img_path,'BlackRock.gif'))
+    create_image(Path(img_path,'WhiteRock.gif'))
+    create_image(Path(img_path,'BlackQueen.gif'))
+    create_image(Path(img_path,'WhiteQueen.gif'))
+    create_image(Path(img_path,'BlackKing.gif'))
+    create_image(Path(img_path,'WhiteKing.gif'))
+    create_image(Path(img_path,'empty.gif'))
+
+    create_image(Path(img_path, 'BlackPeshka_attack.gif'))
+    create_image(Path(img_path, 'WhitePeshka_attack.gif'))
+    create_image(Path(img_path, 'BlackRock_attack.gif'))
+    create_image(Path(img_path, 'WhiteRock_attack.gif'))
+    create_image(Path(img_path, 'BlackKnite_attack.gif'))
+    create_image(Path(img_path, 'WhiteKnite_attack.gif'))
+    create_image(Path(img_path, 'BlackBishop_attack.gif'))
+    create_image(Path(img_path, 'WhiteBishop_attack.gif'))
+    create_image(Path(img_path, 'BlackQueen_attack.gif'))
+    create_image(Path(img_path, 'WhiteQueen_attack.gif'))
+    create_image(Path(img_path, 'BlackKing_attack.gif'))
+    create_image(Path(img_path, 'WhiteKing_attack.gif'))
+    create_image(Path(img_path, 'empty_attack.gif'))
 
 number = 1
 class Chessman():
@@ -50,7 +92,7 @@ class Chessman():
             ('Knight', "Black"): '♞',
             ('Knight', "White"): '♘',
             ('Bishop', "Black"): '♝',
-            ('Bishop', "White"): '♟',
+            ('Bishop', "White"): '♗',
             ('Queen', "Black"): '♛',
             ('Queen', "White"): '♕',
             ('King', "Black"): '♚',
@@ -61,16 +103,15 @@ class Chessman():
         return ''
     
     def get_img(self):
-        
         chess_types ={
             ('Pawn', "Black"): 0,
             ('Pawn', "White"): 1,
-            ('Rock', "Black"): 2,
-            ('Rock', "White"): 3,
-            ('Knight', "Black"): 4,
-            ('Knight', "White"): 5,
-            ('Bishop', "Black"): 6,
-            ('Bishop', "White"): 7,
+            ('Knight', "Black"): 2,
+            ('Knight', "White"): 3,
+            ('Bishop', "Black"): 4,
+            ('Bishop', "White"): 5,
+            ('Rock', "Black"): 6,
+            ('Rock', "White"): 7,
             ('Queen', "Black"): 8,
             ('Queen', "White"): 9,
             ('King', "Black"): 10,
@@ -109,6 +150,7 @@ class Chessman():
         self.y = y
         self.board[self.x][self.y].chess = self
         self.find_king()
+        self.check_pawn(self_button)
         self.write_move()
         
     def write_move(self):
@@ -123,9 +165,6 @@ class Chessman():
         s += chr(ord('a') + self.y) + str(8 - self.x) + ' '
         self.board[-1].insert(END, s)
         
-    #def write_move(figure, board, old, new, nunber = ''):
-    #    board[-1].insert(END, ', ' + nunber + figure, old + '-' + new)
-        
     def check_rock(self):
         if self.type != "Rock":
             return
@@ -134,17 +173,77 @@ class Chessman():
         elif self.color == "White" and self.x == 7:
             self.rock_side(0)
     
-    def check_pawn(self):
-        if self.type('Pawn') and \
+    def check_pawn(self, self_button):
+        def change_chess(index):
+            change ={
+                '♟' : ('Pawn', "Black"),
+                '♙' : ('Pawn', "White"),
+                '♜' : ('Rock', "Black"),
+                '♖' : ('Rock', "White"),
+                '♞' : ('Knight', "Black"),
+                '♘' : ('Knight', "White"),
+                '♝' : ('Bishop', "Black"),
+                '♗' : ('Bishop', "White"),
+                '♛' : ('Queen', "Black"),
+                '♕' : ('Queen', "White"),
+                '♚' : ('King', "Black"),
+                '♔' : ('King', "White")           
+                }
+            t = change[chess_types[index]]
+            self.type = t[0]
+            self.color = t[1]
+            self_button['image'] = get_photo(index)
+            root.quit()
+            root.destroy()
+        
+        global number
+        if number > 1 and \
+            len(s := re.split(' |\.', self.board[-1].get(1.0, END))[-2]) == 2 \
+            and self.type == 'Pawn':
+            y1 = ord(s[0]) - ord('a')
+            x1 = 8 - int(s[1])
+            if abs(x1 - self.x) == 1 and self.y == y1:
+                self.board[x1][y1].chess.defolt()
+                self.board[x1][y1].defolt()
+        if self.type == 'Pawn' and \
             (self.x == 0 or self.x == 7):
-                pass
+                global photos
+                root = Tk()
+                root.title('Chose')
+                Label(root,
+                    text="Выберете фигуру", 
+                    font=("Times", "20", "bold"))\
+                    .grid(columnspan = 4, row= 0)
+                chess_types =[
+                    '♟',
+                    '♙',
+                    '♞',
+                    '♘',
+                    '♝',
+                    '♗',
+                    '♜',
+                    '♖',
+                    '♛',
+                    '♕',
+                    '♚',
+                    '♔'
+                ]
+                start = 0
+                if(self.color == 'White'):
+                    start = 1
+                for i in range(start, 10, 2):
+                    Button(root, 
+                        text=chess_types[i], 
+                        font=("Times", "20"),
+                        command = partial(change_chess, i))\
+                        .grid(column=i//2, row= 1)
+                root.mainloop()
     
     def rock_side(self, color):
         if self.y == 0:
             Moves.rock_left[color] = True
         else:
             Moves.rock_right[color] = True
-        print(Moves.rock_left, Moves.rock_right)
     
     def move(self, defanse = True):
         if self.type == 'Pawn':

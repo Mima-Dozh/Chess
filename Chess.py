@@ -47,6 +47,10 @@ def start_game():
         Button(menu_buttoms, text="Сдаться", bg='red')\
             .pack(side='left')
         return text
+    
+    def lose_game():
+        l_window = Tk()
+        Label(l_window, text='Вы проиграли').pack()
 
     Chessboard(right_panel())
     root.mainloop()
