@@ -1,5 +1,5 @@
-
-
+import re
+from tkinter import *
 
 king_position = [(7, 4, False), (0, 4, False)]
 rock_left = [False, False]
@@ -57,6 +57,15 @@ def Pawn_move(board, color, x, y, defanse):
         (not defanse or \
             not Change_position(board, board[king[0]][king[1]].chess, x, y, k + x, -1 + y)):   
         arr.append((k + x, -1 + y))
+    if (x == 4 and color == 'Black' or x == 3 and color == 'White') and \
+        len(s := re.split(' |\.', board[-1].get(1.0, END))[-2]) == 2:
+            y1 = ord(s[0]) - ord('a')
+            x1 = 8 - int(s[1])
+            if abs(y1 - y) == 1:
+                if color == 'Black':
+                    arr.append((x1+1, y1))
+                else:
+                    arr.append((x1-1, y1))
     return arr
 
 def Rock_move(board, color, x, y, defanse):
