@@ -1,17 +1,15 @@
 from tkinter import *
-import django
+import tkinter.messagebox as mb
 import Controller
+from player import Player
 
-def start_game():
-    root = Tk()
-    root.title('Chess')
+def start_game(root, use_bot=True):
     #root.attributes('-fullscreen', True)
-    root.geometry('700x700')
     Controller.make_arr()
-
+    
     def exit_button():
         root.destroy()
-
+    
     def Chessboard(text):
         l = Label(root, text = 'Удачной игры', height = 1, font = 20, compound= CENTER)
         l.grid(row=0, column=0, columnspan = 9)
@@ -28,6 +26,7 @@ def start_game():
         lbl.grid(row=11, column=1, columnspan = 9)
         board.append(lbl)
         board.append(text)
+        return board
     
     def right_panel():
         Label(root, text='Здесь будет ваша партия') \
@@ -44,16 +43,20 @@ def start_game():
         menu_buttoms.grid(row=7, column= 10, columnspan = 4, sticky = 'n')
         Button(menu_buttoms, text="Предложить ничью", bg='gray')\
             .pack(side='left')
-        Button(menu_buttoms, text="Сдаться", bg='red')\
+        Button(menu_buttoms, text="Сдаться", bg='red', command=lose_game)\
             .pack(side='left')
         return text
     
     def lose_game():
-        l_window = Tk()
-        Label(l_window, text='Вы проиграли').pack()
-
-    Chessboard(right_panel())
-    root.mainloop()
+        mb.showinfo("Итог", "Вы проиграли")
+    
+    board = Chessboard(right_panel())
+    player = Player(board, 'White', use_bot)
+    board.append(player)
+    if(player.color == 'White'):
+        player.move()
 
 if __name__ == "__main__":
-    start_game()
+    root = Tk()
+    start_game(root)
+    root.mainloop()

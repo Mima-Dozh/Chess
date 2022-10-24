@@ -58,7 +58,7 @@ def Pawn_move(board, color, x, y, defanse):
             not Change_position(board, board[king[0]][king[1]].chess, x, y, k + x, -1 + y)):   
         arr.append((k + x, -1 + y))
     if (x == 4 and color == 'Black' or x == 3 and color == 'White') and \
-        len(s := re.split(' |\.', board[-1].get(1.0, END))[-2]) == 2:
+        len(s := re.split(' |\.', board[-2].get(1.0, END))[-2]) == 2:
             y1 = ord(s[0]) - ord('a')
             x1 = 8 - int(s[1])
             if abs(y1 - y) == 1:
