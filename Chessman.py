@@ -31,12 +31,12 @@ def make_arr():
 
     create_image(Path(img_path, 'BlackPeshka_attack.gif'))
     create_image(Path(img_path, 'WhitePeshka_attack.gif'))
-    create_image(Path(img_path, 'BlackRock_attack.gif'))
-    create_image(Path(img_path, 'WhiteRock_attack.gif'))
     create_image(Path(img_path, 'BlackKnite_attack.gif'))
     create_image(Path(img_path, 'WhiteKnite_attack.gif'))
     create_image(Path(img_path, 'BlackBishop_attack.gif'))
     create_image(Path(img_path, 'WhiteBishop_attack.gif'))
+    create_image(Path(img_path, 'BlackRock_attack.gif'))
+    create_image(Path(img_path, 'WhiteRock_attack.gif'))
     create_image(Path(img_path, 'BlackQueen_attack.gif'))
     create_image(Path(img_path, 'WhiteQueen_attack.gif'))
     create_image(Path(img_path, 'BlackKing_attack.gif'))
@@ -163,7 +163,7 @@ class Chessman():
         if(self.type != 'Pawn'):
             s += self.get_type() + '-'
         s += chr(ord('a') + self.y) + str(8 - self.x) + ' '
-        self.board[-1].insert(END, s)
+        self.board[-2].insert(END, s)
         
     def check_rock(self):
         if self.type != "Rock":
@@ -198,7 +198,7 @@ class Chessman():
         
         global number
         if number > 1 and \
-            len(s := re.split(' |\.', self.board[-1].get(1.0, END))[-2]) == 2 \
+            len(s := re.split(' |\.', self.board[-2].get(1.0, END))[-2]) == 2 \
             and self.type == 'Pawn':
             y1 = ord(s[0]) - ord('a')
             x1 = 8 - int(s[1])
