@@ -2,6 +2,8 @@ from tkinter import *
 import tkinter.messagebox as mb
 import Controller
 from player import Player
+from random import *
+
 
 def start_game(root, use_bot=True):
     #root.attributes('-fullscreen', True)
@@ -51,7 +53,8 @@ def start_game(root, use_bot=True):
         mb.showinfo("Итог", "Вы проиграли")
     
     board = Chessboard(right_panel())
-    player = Player(board, 'White', use_bot)
+    colors = ['White', 'Black']
+    player = Player(board, colors[randrange(0,2)], use_bot)
     board.append(player)
     if(player.color == 'White'):
         player.move()

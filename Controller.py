@@ -27,7 +27,7 @@ class Controller():
     def change_position(self, board):
         end = False
         global player_index
-        if(self.button['text'] == '🟢'):
+        if(self.can_move()):
             self.chess.change_position\
                 (self.button, self.chess_attack, self.x, self.y)
             end = True
@@ -45,7 +45,7 @@ class Controller():
         
         for j in range(8):
             for i in range(8):
-                if(board[j][i].button['text'] == '🟢'):
+                if(board[j][i].can_move()):
                     board[j][i].defolt()
         if end or (self.chess.color == 'White' and player_index != 1 or \
                     self.chess.color != 'White' and player_index == 1):
@@ -56,7 +56,10 @@ class Controller():
             variant.chess_attack = self.chess.copy()
             variant.button['text'] = '🟢'
             variant.button.config( image = get_photo(variant.chess.get_img() + 13) )
-        
+    
+    def can_move(self):
+        return self.button['text'] == '🟢'
+    
     def use_bot(self, board):
         Chess_bot.bot_logic(self, board)
 
